@@ -1,5 +1,6 @@
-# Starknet Hardhat TypeScript Example 
-Example setup of a Starknet-Hardhat-TypeScript project. This is an empty project that you can take a fork. It's configured and works following the instructions. 
+# Automated Market Maker in Cairo
+This project is a simple implementation of an Automated Market Maker written in [Cairo](https://www.cairo-lang.org/).
+Use it at your own risk.
 
 
 ## Setup
