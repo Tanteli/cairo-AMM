@@ -149,5 +149,5 @@ Repo is inspired from [Starknet Hardhat Example](https://github.com/Shard-Labs/s
 Based on the [Starknet Hardhat plugin](https://github.com/Shard-Labs/starknet-hardhat-plugin).
 
 
-## Author
-Claudio, clacla.eth
+## Credits
+Template from Claudio, clacla.eth

@@ -90,3 +90,38 @@ func modify_account{range_check_ptr}(state : AMMState, account_id, diff_a, diff_
 
     return (state=new_state, key=old_account.public_key)
 end
+
+func swap{range_check_ptr}(state : AMMState, transaction : SwapTransaction*) -> (state : AMMState):
+    alloc_locals
+
+    tempvar a_amount = transaction.token_a_amount
+    tempvar a_balance = state.token_a_balance
+    tempvar b_balance = state.token_b_balance
+
+    # Check that amount a is in range
+    assert_nn_le(a_amount, MAX_BALANCE)
+
+    # Compute token b amount
+    # b = (y * a) / (x + a)
+    let (b_amount, _) = unsigned_div_rem(b_balance * a_amount, a_balance + a_amount)
+
+    # Check that b is in a range
+    assert_nn_le(b_amount, MAX_BALANCE)
+
+    # Update user account
+    let (state, key) = modify_account(
+        state=state, account_id=transaction.account_id, diff_a=-a_amount, diff_b=b_amount
+    )
+
+    # Update state
+    local new_state : AMMState
+    assert new_state.account_dict_start = state.account_dict_start
+    assert new_state.account_dict_end = state.account_dict_end
+    assert new_state.token_a_balance = a_balance + a_amount
+    assert new_state.token_b_balance = b_balance - b_amount
+
+    assert_nn_le(new_state.token_a_balance, MAX_BALANCE)
+    assert_nn_le(new_state.token_b_balance, MAX_BALANCE)
+
+    return (state=new_state)
+end
